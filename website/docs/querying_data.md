@@ -59,12 +59,12 @@ Additionally, `HoodieReadClient` offers the following functionality using Hudi's
 | filterExists() | Filter out already existing records from the provided `RDD[HoodieRecord]`. Useful for de-duplication |
 | checkExists(keys) | Check if the provided keys exist in a Hudi table |
 
-### Spark SQL
+## Spark SQL
 Once the Hudi tables have been registered to the Hive metastore, they can be queried using the Spark-Hive integration.
 By default, Spark SQL will try to use its own parquet reader instead of Hive SerDe when reading from Hive metastore parquet tables.
 The following are important settings to consider when querying COPY_ON_WRITE or MERGE_ON_READ tables. 
 
-#### Copy On Write tables
+### Copy On Write tables
 For COPY_ON_WRITE tables, Spark's default parquet reader can be used to retain Sparks built-in optimizations for reading parquet files like vectorized reading on Hudi Hive tables.
 If using the default parquet reader, a path filter needs to be pushed into sparkContext as follows.
 
@@ -72,7 +72,7 @@ If using the default parquet reader, a path filter needs to be pushed into spark
 spark.sparkContext.hadoopConfiguration.setClass("mapreduce.input.pathFilter.class", classOf[org.apache.hudi.hadoop.HoodieROTablePathFilter], classOf[org.apache.hadoop.fs.PathFilter]);
 ```
 
-#### Merge On Read tables
+### Merge On Read tables
 No special configurations are needed for querying MERGE_ON_READ tables with Hudi version 0.9.0+
 
 If you are querying MERGE_ON_READ tables using Hudi version <= 0.8.0, you need to turn off the SparkSQL default parquet reader by setting: `spark.sql.hive.convertMetastoreParquet=false`.
